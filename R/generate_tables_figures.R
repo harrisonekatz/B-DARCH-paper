@@ -78,7 +78,7 @@ generate_table1 <- function() {
   # Combine into Table 1 format
   table1 <- summary_sim1 %>%
     left_join(summary_sim2, by = "model") %>%
-    select(
+    dplyr::select(
       Model = model,
       `Sim 1 FRMSE` = FRMSE_sim1,
       `Sim 1 FMAE` = FMAE_sim1,
@@ -147,7 +147,7 @@ generate_table2 <- function() {
   # Combine into Table 2 format
   table2 <- summary_sim3 %>%
     left_join(summary_sim4, by = "model") %>%
-    select(
+     dplyr::select(
       Model = model,
       `Sim 3 FRMSE` = FRMSE_sim3,
       `Sim 3 FMAE` = FMAE_sim3,
