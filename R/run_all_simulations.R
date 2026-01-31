@@ -37,10 +37,18 @@ cat("  -> Output: summ_varma_regime_shift.RDS, pacf_sim_tvarma_regime_shift.RDS\
 
 cat("Generating Tables 1-2 and Figures S1-S2...\n")
 source("R/generate_tables_figures.R")
-
+table1 <- generate_table1()
+table2 <- generate_table2()
+generate_figure_s1()
+generate_figure_s2()
+generate_latex_tables(table1, table2)
 cat("\n=== All outputs generated successfully ===\n")
 cat("Check the output/ directory for:\n")
 cat("  - table1.csv (Table 1: Shock simulations)\n")
 cat("  - table2.csv (Table 2: Regime shift simulations)\n")
 cat("  - figure_s1.pdf (Figure S1: PACF for shock simulations)\n")
 cat("  - figure_s2.pdf (Figure S2: PACF for regime shift simulations)\n")
+
+
+
+
