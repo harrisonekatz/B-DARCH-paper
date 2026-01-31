@@ -1562,6 +1562,7 @@ for(i in 1:n_sim){
     K          = purrr::map_int(X_component[[1]], length),  # typically rep(1, C-1)
     X          = X_component,
     P          = 1,
+    Q          =0,
     T_new      = T_new,
     X_new      = X_new_component,
     prior_only = 0,
