@@ -185,9 +185,9 @@ When compiling, CmdStan resolves includes from the `stan/` directory via the `in
 
 | File | Model | Key Features |
 |------|-------|--------------|
-| `bdarma.stan` | B-DARMA | Dirichlet likelihood, VAR(P) on ALR scale, constant precision |
-| `bdarch_pq.stan` | B-DARCH(P,Q) | Dirichlet likelihood, VARMA on ALR, ARCH dynamics on precision |
-| `varma.stan` | B-tVARMA | Gaussian likelihood on ALR scale, VARMA structure |
+| `bdarma.stan` | B-DARMA | Dirichlet likelihood, VARMA process on ALR scale, constant precision |
+| `bdarch_pq.stan` | B-DARCH(P,Q) | Dirichlet likelihood, VARMA process on ALR, ARCH dynamics on precision |
+| `varma.stan` | B-tVARMA | Gaussian likelihood on ALR scale, VARMA process |
 | `TVP.stan` | B-TVP-tVARMA | Gaussian on ALR with time-varying mean coefficients |
 
 ---
