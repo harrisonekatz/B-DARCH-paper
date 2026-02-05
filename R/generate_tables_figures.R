@@ -53,12 +53,14 @@ generate_table1 <- function() {
   }
   
   # Process Study 1
-  # Structure: tibble with columns simulation, model, value (nested with SSR, MAE, etc.)
+  # SSR = sum of squared errors across all T*J observations per simulation
+  # FRMSE = sqrt of the across-simulation average SSR, times 100
+  # MAE = mean absolute error per simulation (already normalized by T*J)
   summary_sim1 <- sim1_metrics %>%
     unnest(value) %>%
     group_by(model) %>%
     summarize(
-      FRMSE_sim1 = 100 * sqrt(mean(SSR, na.rm = TRUE)),
+      FRMSE_sim1 = 100 * sqrt(mean(mSSR, na.rm = TRUE)),
       FMAE_sim1 = 100 * mean(MAE, na.rm = TRUE),
       .groups = "drop"
     ) %>%
@@ -69,7 +71,7 @@ generate_table1 <- function() {
     unnest(value) %>%
     group_by(model) %>%
     summarize(
-      FRMSE_sim2 = 100 * sqrt(mean(SSR, na.rm = TRUE)),
+      FRMSE_sim2 = 100 * sqrt(mean(mSSR, na.rm = TRUE)),
       FMAE_sim2 = 100 * mean(MAE, na.rm = TRUE),
       .groups = "drop"
     ) %>%
@@ -127,7 +129,7 @@ generate_table2 <- function() {
     unnest(value) %>%
     group_by(model) %>%
     summarize(
-      FRMSE_sim3 = 100 * sqrt(mean(SSR, na.rm = TRUE)),
+      FRMSE_sim3 = 100 * sqrt(mean(mSSR, na.rm = TRUE)),
       FMAE_sim3 = 100 * mean(MAE, na.rm = TRUE),
       .groups = "drop"
     ) %>%
@@ -138,7 +140,7 @@ generate_table2 <- function() {
     unnest(value) %>%
     group_by(model) %>%
     summarize(
-      FRMSE_sim4 = 100 * sqrt(mean(SSR, na.rm = TRUE)),
+      FRMSE_sim4 = 100 * sqrt(mean(mSSR, na.rm = TRUE)),
       FMAE_sim4 = 100 * mean(MAE, na.rm = TRUE),
       .groups = "drop"
     ) %>%
@@ -147,7 +149,7 @@ generate_table2 <- function() {
   # Combine into Table 2 format
   table2 <- summary_sim3 %>%
     left_join(summary_sim4, by = "model") %>%
-     dplyr::select(
+    dplyr::select(
       Model = model,
       `Sim 3 FRMSE` = FRMSE_sim3,
       `Sim 3 FMAE` = FMAE_sim3,
@@ -351,11 +353,15 @@ generate_latex_tables <- function(table1, table2) {
   }
   
   # Table 1 LaTeX
+  # Caption matches computation: FRMSE = sqrt(avg across sims of SSR) where
+  # SSR = sum_{t,j} (y_tj - yhat_tj)^2; FMAE = avg across sims of MAE where
+  # MAE = (1/TJ) sum_{t,j} |y_tj - yhat_tj|
   latex1 <- paste0(
     "\\begin{table}[htbp]\n",
     "\\centering\n",
     "\\caption{Summary of model performance metrics ($\\times 100$) on the test set ($T=40$) across 50 simulations for Simulation Studies 1--2. ",
-    "FRMSE ($\\times 100$) equals the across-simulation average of RMSE $= \\sqrt{\\frac{1}{TJ}\\sum_{t=1}^{T}\\sum_{j=1}^{J}(y_{tj} - \\hat{y}_{tj})^2}$; ",
+    "FRMSE ($\\times 100$) equals $\\sqrt{\\frac{1}{S}\\sum_{s=1}^{S} \\text{SSR}_s}$ where ",
+    "$\\text{SSR}_s = \\sum_{t=1}^{T}\\sum_{j=1}^{J}(y_{tj} - \\hat{y}_{tj})^2$; ",
     "FMAE ($\\times 100$) equals the across-simulation average of MAE $= \\frac{1}{TJ}\\sum_{t=1}^{T}\\sum_{j=1}^{J}|y_{tj} - \\hat{y}_{tj}|$.}\n",
     "\\label{tab:sim12}\n",
     "\\begin{tabular}{lcccc}\n",
@@ -383,7 +389,8 @@ generate_latex_tables <- function(table1, table2) {
     "\\begin{table}[htbp]\n",
     "\\centering\n",
     "\\caption{Summary of model performance metrics ($\\times 100$) on the test set ($T=40$) across 50 simulations for Simulation Studies 3--4. ",
-    "FRMSE ($\\times 100$) equals the across-simulation average of RMSE $= \\sqrt{\\frac{1}{TJ}\\sum_{t=1}^{T}\\sum_{j=1}^{J}(y_{tj} - \\hat{y}_{tj})^2}$; ",
+    "FRMSE ($\\times 100$) equals $\\sqrt{\\frac{1}{S}\\sum_{s=1}^{S} \\text{SSR}_s}$ where ",
+    "$\\text{SSR}_s = \\sum_{t=1}^{T}\\sum_{j=1}^{J}(y_{tj} - \\hat{y}_{tj})^2$; ",
     "FMAE ($\\times 100$) equals the across-simulation average of MAE $= \\frac{1}{TJ}\\sum_{t=1}^{T}\\sum_{j=1}^{J}|y_{tj} - \\hat{y}_{tj}|$.}\n",
     "\\label{tab:sim34}\n",
     "\\begin{tabular}{lcccc}\n",
