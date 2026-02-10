@@ -165,7 +165,7 @@ n_sim <- 10  # instead of 50
 All models use:
 - 4 chains in parallel (`parallel_chains = 4`)
 - 250 warmup + 250 sampling iterations per chain
-- Seed: 1234 for reproducibility
+- Seed: 1007 for reproducibility
 
 The paper's final results used longer runs; these settings are sufficient to verify the methodology.
 
